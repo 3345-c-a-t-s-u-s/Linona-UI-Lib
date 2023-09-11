@@ -1601,7 +1601,7 @@ function Linona:NewWindow(WindowName,SizeConfix,BindKey)
 		
 		local function UpdateText()
 			local number = #tostring(TextLabel.Text)
-			local sizex = (number / 2.25) / 10
+			local sizex = (number / 3) / 10
 			
 			TweenService:Create(Framea,TweenInfo.new(0.2),{Size = UDim2.new(sizex,0,1,0),Position = UDim2.new(1,0,0,0)}):Play()
 		end
