@@ -1,0 +1,1598 @@
+local TweenService = game:GetService('TweenService')
+local CoreGui = game:FindFirstChild('CoreGui') or game:WaitForChild('Players').LocalPlayer.PlayerGui
+local UserInputService = game:GetService('UserInputService')
+
+local function ConnectButtonEffect(UIFrame:Frame&TextButton&ImageLabel,UIStroke:UIStroke,int)
+	if not UIStroke then
+		return
+	end
+	
+	int = int or 0.2
+	local OldColor = UIStroke.Color
+	local R,G,B = OldColor.R,OldColor.G,OldColor.B
+	local MainColor = Color3.fromHSV(R,G,B + int)
+
+	UIFrame.InputBegan:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.Touch or Input.UserInputType == Enum.UserInputType.MouseMovement then
+			TweenService:Create(UIStroke,TweenInfo.new(0.2),{Color = MainColor}):Play()
+		end
+	end)
+	
+	UIFrame.InputEnded:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.Touch or Input.UserInputType == Enum.UserInputType.MouseMovement then
+			TweenService:Create(UIStroke,TweenInfo.new(0.2),{Color = OldColor}):Play()
+		end
+	end)
+end
+
+local Linona = {}
+
+function Linona:NewWindow(WindowName,SizeConfix,BindKey)
+	BindKey = BindKey or Enum.KeyCode.X
+	SizeConfix = SizeConfix or UDim2.new(0.479999989, 0, 0.479999989, 0)
+	local LinonaWindow = {BindKey = BindKey}
+	local Tabs = {}
+	local IsMinsize = false
+	local IsClose = false
+	local Dbg_can_move = true
+	
+	local LinonaUI = Instance.new("ScreenGui")
+	local Frame = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local DropShadow = Instance.new("ImageLabel")
+	local Frame_2 = Instance.new("Frame")
+	local UIGradient = Instance.new("UIGradient")
+	local HeaderText = Instance.new("TextLabel")
+	local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+	local BOX_TAB_BUTTONS = Instance.new("Frame")
+	local UIStroke = Instance.new("UIStroke")
+	local TabButtonScrolling = Instance.new("ScrollingFrame")
+	local UIListLayout = Instance.new("UIListLayout")
+	local BOX_TAB_FRAMES = Instance.new("Frame")
+	local UIStroke_2 = Instance.new("UIStroke")
+	local ButtonHeader = Instance.new("Frame")
+	local UICorner_2 = Instance.new("UICorner")
+	local UIStroke_3 = Instance.new("UIStroke")
+	local Frame_3 = Instance.new("Frame")
+	local UIGradient_2 = Instance.new("UIGradient")
+	local DropShadow_2 = Instance.new("ImageLabel")
+	local Minsize = Instance.new("TextButton")
+	local UIStroke_4 = Instance.new("UIStroke")
+	local Close = Instance.new("TextButton")
+	local UIStroke_5 = Instance.new("UIStroke")
+	
+	UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+		TabButtonScrolling.CanvasSize = UDim2.new(0,0,0,UIListLayout.AbsoluteContentSize.Y)	
+	end)
+	
+	LinonaUI.Name = "Linona UI"
+	LinonaUI.Parent = CoreGui
+	LinonaUI.ResetOnSpawn = false
+	LinonaUI.IgnoreGuiInset = true
+	LinonaUI.ZIndexBehavior = Enum.ZIndexBehavior.Global
+	
+	Frame.Parent = LinonaUI
+	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame.BorderSizePixel = 0
+	Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Frame.Size = SizeConfix
+	Frame.ZIndex = 2
+
+	UICorner.CornerRadius = UDim.new(0, 2)
+	UICorner.Parent = Frame
+
+	DropShadow.Name = "DropShadow"
+	DropShadow.Parent = Frame
+	DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+	DropShadow.BackgroundTransparency = 1.000
+	DropShadow.BorderSizePixel = 0
+	DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+	DropShadow.Size = UDim2.new(1, 47, 1, 47)
+	DropShadow.ZIndex = -2
+	DropShadow.Image = "rbxassetid://6014261993"
+	DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+	DropShadow.ImageTransparency = 0.500
+	DropShadow.ScaleType = Enum.ScaleType.Slice
+	DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+	Frame_2.Parent = Frame
+	Frame_2.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+	Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_2.BorderSizePixel = 0
+	Frame_2.Size = UDim2.new(1, 0, 0.0149999997, 0)
+	Frame_2.ZIndex = 3
+
+	UIGradient.Rotation = 90
+	UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+	UIGradient.Parent = Frame_2
+
+	HeaderText.Name = "HeaderText"
+	HeaderText.Parent = Frame
+	HeaderText.AnchorPoint = Vector2.new(0.5, 0)
+	HeaderText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	HeaderText.BackgroundTransparency = 1.000
+	HeaderText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	HeaderText.BorderSizePixel = 0
+	HeaderText.Position = UDim2.new(0.50000006, 0, 0.00999998953, 0)
+	HeaderText.Size = UDim2.new(0.980000019, 0, 0.100000001, 0)
+	HeaderText.ZIndex = 2
+	HeaderText.Font = Enum.Font.RobotoMono
+	HeaderText.Text = WindowName or "Linona UI"
+	HeaderText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	HeaderText.TextSize = 14.000
+	HeaderText.TextWrapped = true
+	HeaderText.TextXAlignment = Enum.TextXAlignment.Left
+
+	UITextSizeConstraint.Parent = HeaderText
+
+	BOX_TAB_BUTTONS.Name = "BOX_TAB_BUTTONS"
+	BOX_TAB_BUTTONS.Parent = Frame
+	BOX_TAB_BUTTONS.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+	BOX_TAB_BUTTONS.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	BOX_TAB_BUTTONS.BorderSizePixel = 0
+	BOX_TAB_BUTTONS.Position = UDim2.new(0.0249999668, 0, 0.124999925, 0)
+	BOX_TAB_BUTTONS.Size = UDim2.new(0.227800965, 0, 0.850000024, 0)
+	BOX_TAB_BUTTONS.ZIndex = 5
+
+	UIStroke.Color = Color3.fromRGB(25, 25, 25)
+	UIStroke.Parent = BOX_TAB_BUTTONS
+
+	TabButtonScrolling.Name = "TabButtonScrolling"
+	TabButtonScrolling.Parent = BOX_TAB_BUTTONS
+	TabButtonScrolling.Active = true
+	TabButtonScrolling.AnchorPoint = Vector2.new(0.5, 0.5)
+	TabButtonScrolling.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TabButtonScrolling.BackgroundTransparency = 1.000
+	TabButtonScrolling.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	TabButtonScrolling.BorderSizePixel = 0
+	TabButtonScrolling.Position = UDim2.new(0.5, 0, 0.5, 0)
+	TabButtonScrolling.Size = UDim2.new(0.980000019, 0, 0.980000019, 0)
+	TabButtonScrolling.ZIndex = 5
+	TabButtonScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
+	TabButtonScrolling.ScrollBarThickness = 1
+
+	UIListLayout.Parent = TabButtonScrolling
+	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.Padding = UDim.new(0, 2)
+
+	BOX_TAB_FRAMES.Name = "BOX_TAB_FRAMES"
+	BOX_TAB_FRAMES.Parent = Frame
+	BOX_TAB_FRAMES.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+	BOX_TAB_FRAMES.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	BOX_TAB_FRAMES.BorderSizePixel = 0
+	BOX_TAB_FRAMES.Position = UDim2.new(0.293742508, 0, 0.124999925, 0)
+	BOX_TAB_FRAMES.Size = UDim2.new(0.682357073, 0, 0.850000024, 0)
+	BOX_TAB_FRAMES.ZIndex = 5
+
+	UIStroke_2.Color = Color3.fromRGB(25, 25, 25)
+	UIStroke_2.Parent = BOX_TAB_FRAMES
+
+	ButtonHeader.Name = "ButtonHeader"
+	ButtonHeader.Parent = Frame
+	ButtonHeader.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+	ButtonHeader.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	ButtonHeader.BorderSizePixel = 0
+	ButtonHeader.Position = UDim2.new(0.843281329, 0, -0.0831493437, 0)
+	ButtonHeader.Size = UDim2.new(0.155995905, 0, 0.158556998, 0)
+
+	UICorner_2.CornerRadius = UDim.new(0, 3)
+	UICorner_2.Parent = ButtonHeader
+
+	UIStroke_3.Color = Color3.fromRGB(25, 25, 25)
+	UIStroke_3.Parent = ButtonHeader
+
+	Frame_3.Parent = ButtonHeader
+	Frame_3.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+	Frame_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame_3.BorderSizePixel = 0
+	Frame_3.Size = UDim2.new(1, 0, 0.0149999997, 0)
+	Frame_3.ZIndex = 3
+
+	UIGradient_2.Rotation = 90
+	UIGradient_2.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+	UIGradient_2.Parent = Frame_3
+
+	DropShadow_2.Name = "DropShadow"
+	DropShadow_2.Parent = ButtonHeader
+	DropShadow_2.AnchorPoint = Vector2.new(0.5, 0.5)
+	DropShadow_2.BackgroundTransparency = 1.000
+	DropShadow_2.BorderSizePixel = 0
+	DropShadow_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+	DropShadow_2.Size = UDim2.new(1, 47, 1, 47)
+	DropShadow_2.ZIndex = -2
+	DropShadow_2.Image = "rbxassetid://6014261993"
+	DropShadow_2.ImageColor3 = Color3.fromRGB(0, 0, 0)
+	DropShadow_2.ImageTransparency = 0.500
+	DropShadow_2.ScaleType = Enum.ScaleType.Slice
+	DropShadow_2.SliceCenter = Rect.new(49, 49, 450, 450)
+
+	Minsize.Name = "Minsize"
+	Minsize.Parent = ButtonHeader
+	Minsize.AnchorPoint = Vector2.new(0, 0.100000001)
+	Minsize.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Minsize.BackgroundTransparency = 1.000
+	Minsize.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Minsize.BorderSizePixel = 0
+	Minsize.Position = UDim2.new(0.0499998182, 0, 0.0919664726, 0)
+	Minsize.Size = UDim2.new(0.419999987, 0, 0.449999988, 0)
+	Minsize.ZIndex = 3
+	Minsize.Font = Enum.Font.Unknown
+	Minsize.Text = "-"
+	Minsize.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Minsize.TextScaled = true
+	Minsize.TextSize = 14.000
+	Minsize.TextWrapped = true
+
+	UIStroke_4.Color = Color3.fromRGB(25, 25, 25)
+	UIStroke_4.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	UIStroke_4.Parent = Minsize
+
+	Close.Name = "Close"
+	Close.Parent = ButtonHeader
+	Close.AnchorPoint = Vector2.new(0, 0.100000001)
+	Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Close.BackgroundTransparency = 1.000
+	Close.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Close.BorderSizePixel = 0
+	Close.Position = UDim2.new(0.517816424, 0, 0.0919664726, 0)
+	Close.Size = UDim2.new(0.419999987, 0, 0.449999988, 0)
+	Close.ZIndex = 3
+	Close.Font = Enum.Font.Unknown
+	Close.Text = "X"
+	Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Close.TextScaled = true
+	Close.TextSize = 14.000
+	Close.TextWrapped = true
+
+	UIStroke_5.Color = Color3.fromRGB(25, 25, 25)
+	UIStroke_5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	UIStroke_5.Parent = Close
+	
+	function LinonaWindow:NewTab(TabName)
+		local LinonaTab = {}
+		
+		local TabButton = Instance.new("TextButton")
+		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+
+		TabButton.Name = "TabButton"
+		TabButton.Parent = TabButtonScrolling
+		TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TabButton.BackgroundTransparency = 1.000
+		TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		TabButton.BorderSizePixel = 0
+		TabButton.Size = UDim2.new(0.970000029, 0, 0.5, 0)
+		TabButton.ZIndex = 5
+		TabButton.Font = Enum.Font.RobotoMono
+		TabButton.Text = TabName or "Example"
+		TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TabButton.TextScaled = true
+		TabButton.TextSize = 15.000
+		TabButton.TextWrapped = true
+
+		UIAspectRatioConstraint.Parent = TabButton
+		UIAspectRatioConstraint.AspectRatio = 4.000
+		UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+		
+		local TabFrameScrolling = Instance.new("ScrollingFrame")
+		local UIListLayout = Instance.new("UIListLayout")
+		
+		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+			TabFrameScrolling.CanvasSize = UDim2.new(0,0,0,UIListLayout.AbsoluteContentSize.Y)	
+		end)
+		
+		TabFrameScrolling.Name = "TabFrameScrolling"
+		TabFrameScrolling.Parent = BOX_TAB_FRAMES
+		TabFrameScrolling.Active = true
+		TabFrameScrolling.AnchorPoint = Vector2.new(0.5, 0.5)
+		TabFrameScrolling.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TabFrameScrolling.BackgroundTransparency = 1.000
+		TabFrameScrolling.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		TabFrameScrolling.BorderSizePixel = 0
+		TabFrameScrolling.Position = UDim2.new(0.5, 0, 0.5, 0)
+		TabFrameScrolling.Size = UDim2.new(0.980000019, 0, 0.980000019, 0)
+		TabFrameScrolling.ZIndex = 5
+		TabFrameScrolling.ScrollBarThickness = 1
+
+		UIListLayout.Parent = TabFrameScrolling
+		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.Padding = UDim.new(0, 5)
+		
+		local EventFire = Instance.new('BindableEvent')
+		
+		EventFire.Event:Connect(function(val)
+			if val then
+				TweenService:Create(TabButton,TweenInfo.new(0.2),{TextColor3 = Color3.fromRGB(255, 0, 4)}):Play()
+				TabFrameScrolling.Visible = true
+			else
+				TweenService:Create(TabButton,TweenInfo.new(0.2),{TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+				TabFrameScrolling.Visible = false
+			end
+		end)
+		
+		if #Tabs==0 then
+			EventFire:Fire(true)
+		else
+			EventFire:Fire(false)
+		end
+		
+		table.insert(Tabs,{EventFire})
+		
+		TabButton.MouseButton1Click:Connect(function()
+			for i,v in ipairs(Tabs) do
+				if v[1]==EventFire then
+					v[1]:Fire(true)
+				else
+					v[1]:Fire(false)
+				end
+			end
+		end)
+		
+		function LinonaTab:NewSection(SectionName)
+			local LinonaSection = {}
+			
+			local Section = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local Frame = Instance.new("Frame")
+			local UIGradient = Instance.new("UIGradient")
+
+			Section.Name = "Section"
+			Section.Parent = TabFrameScrolling
+			Section.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Section.BackgroundTransparency = 1.000
+			Section.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Section.BorderSizePixel = 0
+			Section.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Section.ZIndex = 9
+
+			UIAspectRatioConstraint.Parent = Section
+			UIAspectRatioConstraint.AspectRatio = 15.000
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = Section
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Size = UDim2.new(1, 0, 1, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = SectionName or "This is Section"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+
+			Frame.Parent = Section
+			Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Frame.BorderSizePixel = 0
+			Frame.Position = UDim2.new(0, 0, 1, 0)
+			Frame.Size = UDim2.new(1, 0, 0.150000006, 0)
+			Frame.ZIndex = 10
+
+			UIGradient.Rotation = 90
+			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.33, 0.52), NumberSequenceKeypoint.new(1.00, 1.00)}
+			UIGradient.Parent = Frame
+			
+			function LinonaSection:Text(...)
+				local arge = {...}
+				Title.Text = tostring(arge[1])
+			end
+			
+			return LinonaSection
+		end
+		
+		function LinonaTab:NewLabel(LabelName,typeText)
+			local main = {
+				['right'] = Enum.TextXAlignment.Right,
+				['left'] = Enum.TextXAlignment.Left,
+				['center'] = Enum.TextXAlignment.Center
+			}
+			
+			typeText = main[tostring(typeText):lower()] or main.center
+			
+			local LinonaLabel = {}
+			
+			local Label = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+
+			Label.Name = "Label"
+			Label.Parent = TabFrameScrolling
+			Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Label.BackgroundTransparency = 1.000
+			Label.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Label.BorderSizePixel = 0
+			Label.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Label.ZIndex = 5
+
+			UIAspectRatioConstraint.Parent = Label
+			UIAspectRatioConstraint.AspectRatio = 12.500
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = Label
+			Title.AnchorPoint = Vector2.new(0, 0.5)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0, 0, 0.5, 0)
+			Title.Size = UDim2.new(1, 0, 0.850000024, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.Text = LabelName or "Label"
+			Title.TextXAlignment = typeText
+			
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+			
+			function LinonaLabel:Text(...)
+				local arge = {...}
+				Title.Text = tostring(arge[1])
+			end
+			
+			function LinonaLabel:Position(typeText)
+				typeText = main[tostring(typeText):lower()] or main.center
+				Title.TextXAlignment = typeText
+			end
+			
+			return LinonaLabel
+		end
+		
+		function LinonaTab:NewToggle(ToggleName,Default,callback)
+			local LinonaToggle = {}
+			Default = Default or false
+			callback = callback or function() end
+			local Toggle = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+			local ToggleIcon = Instance.new("Frame")
+			local UIStroke = Instance.new("UIStroke")
+			local UICorner = Instance.new("UICorner")
+			local Frame = Instance.new("Frame")
+			local UIGradient = Instance.new("UIGradient")
+			local UICorner_2 = Instance.new("UICorner")
+			local UIGradient_2 = Instance.new("UIGradient")
+			local InputButton = Instance.new("TextButton")
+
+			Toggle.Name = "Toggle"
+			Toggle.Parent = TabFrameScrolling
+			Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Toggle.BackgroundTransparency = 1.000
+			Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Toggle.BorderSizePixel = 0
+			Toggle.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Toggle.ZIndex = 5
+
+			UIAspectRatioConstraint.Parent = Toggle
+			UIAspectRatioConstraint.AspectRatio = 12.500
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = Toggle
+			Title.AnchorPoint = Vector2.new(0, 0.5)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0.111874484, 0, 0.500000238, 0)
+			Title.Size = UDim2.new(0.888125479, 0, 0.849999964, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = ToggleName or "Toggle"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+
+			ToggleIcon.Name = "ToggleIcon"
+			ToggleIcon.Parent = Toggle
+			ToggleIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+			ToggleIcon.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+			ToggleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			ToggleIcon.BorderSizePixel = 0
+			ToggleIcon.Position = UDim2.new(0.0450000018, 0, 0.5, 0)
+			ToggleIcon.Size = UDim2.new(0.899999976, 0, 0.899999976, 0)
+			ToggleIcon.SizeConstraint = Enum.SizeConstraint.RelativeYY
+			ToggleIcon.ZIndex = 5
+
+			UIStroke.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke.Parent = ToggleIcon
+
+			UICorner.CornerRadius = UDim.new(0, 1)
+			UICorner.Parent = ToggleIcon
+
+			Frame.Parent = ToggleIcon
+			Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+			Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Frame.BorderSizePixel = 0
+			Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+			Frame.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
+			Frame.ZIndex = 6
+
+			UIGradient.Rotation = 90
+			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 0.56)}
+			UIGradient.Parent = Frame
+
+			UICorner_2.CornerRadius = UDim.new(0, 1)
+			UICorner_2.Parent = Frame
+
+			UIGradient_2.Rotation = 90
+			UIGradient_2.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+			UIGradient_2.Parent = ToggleIcon
+
+			InputButton.Name = "InputButton"
+			InputButton.Parent = Toggle
+			InputButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			InputButton.BackgroundTransparency = 1.000
+			InputButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.BorderSizePixel = 0
+			InputButton.Size = UDim2.new(1, 0, 1, 0)
+			InputButton.ZIndex = 10
+			InputButton.Font = Enum.Font.SourceSans
+			InputButton.Text = ""
+			InputButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.TextSize = 14.000
+			InputButton.TextTransparency = 1.000
+			
+			local function Set(val)
+				if val then
+					TweenService:Create(Frame,TweenInfo.new(0.1),{Size = UDim2.new(0.8,0,0.8,0),BackgroundTransparency = 0}):Play()
+				else
+					TweenService:Create(Frame,TweenInfo.new(0.1),{Size = UDim2.new(0,0,0,0),BackgroundTransparency = 1}):Play()
+				end
+			end
+			
+			Set(Default)
+			
+			InputButton.MouseButton1Click:Connect(function()
+				Default = not Default
+				Set(Default)
+				callback(Default)
+			end)
+			
+			ConnectButtonEffect(InputButton,UIStroke)
+			
+			function LinonaToggle:Text(...)
+				local arge = {...}
+				Title.Text = tostring(arge[1])
+			end
+			
+			function LinonaToggle:Set(val)
+				Default = val
+				Set(Default)
+				callback(Default)
+			end
+			
+			return LinonaToggle
+		end
+		
+		function LinonaTab:NewButton(ButtonName,callback)
+			local LinonaButton = {}
+			callback = callback or function() end
+			
+			local Button = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+			local InputButton = Instance.new("TextButton")
+			local UIGradient = Instance.new("UIGradient")
+			local UIStroke = Instance.new("UIStroke")
+
+			Button.Name = "Button"
+			Button.Parent = TabFrameScrolling
+			Button.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Button.BorderSizePixel = 0
+			Button.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Button.ZIndex = 5
+
+			UIAspectRatioConstraint.Parent = Button
+			UIAspectRatioConstraint.AspectRatio = 12.500
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = Button
+			Title.AnchorPoint = Vector2.new(0.5, 0.5)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0.5, 0, 0.5, 0)
+			Title.Size = UDim2.new(0.949999988, 0, 0.850000024, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = ButtonName or "Button"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+
+			InputButton.Name = "InputButton"
+			InputButton.Parent = Button
+			InputButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			InputButton.BackgroundTransparency = 1.000
+			InputButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.BorderSizePixel = 0
+			InputButton.Size = UDim2.new(1, 0, 1, 0)
+			InputButton.ZIndex = 10
+			InputButton.Font = Enum.Font.SourceSans
+			InputButton.Text = ""
+			InputButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.TextSize = 14.000
+			InputButton.TextTransparency = 1.000
+
+			UIGradient.Rotation = 90
+			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.97), NumberSequenceKeypoint.new(1.00, 1.00)}
+			UIGradient.Parent = Button
+
+			UIStroke.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke.Parent = Button
+			
+			ConnectButtonEffect(InputButton,UIStroke)
+			
+			InputButton.MouseButton1Click:Connect(function()
+				local old = UIStroke.Color
+				UIStroke.Color = Color3.fromRGB(148, 148, 148)
+				
+				TweenService:Create(UIStroke,TweenInfo.new(0.2),{Color=old }):Play()
+				callback()
+			end)
+			
+			function LinonaButton:Text(...)
+				local arge = {...}
+				Title.Text = tostring(arge[1])
+			end
+			
+			function LinonaButton:Fire(...)
+				callback(...)
+			end
+			
+			return LinonaButton
+		end
+		
+		function LinonaTab:NewSlider(SliderName,Min,Max,callback)
+			local LinonaSlider = {}
+			callback = callback or function() end
+			Min = Min or 1
+			Max = Max or 100
+
+			local Slider = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local SliderFrame = Instance.new("Frame")
+			local UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
+			local UIStroke = Instance.new("UIStroke")
+			local UIGradient = Instance.new("UIGradient")
+			local Move = Instance.new("Frame")
+			local UICorner = Instance.new("UICorner")
+			local Frame = Instance.new("Frame")
+			local UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+			local Value = Instance.new("TextLabel")
+			local UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint")
+
+			Slider.Name = "Slider"
+			Slider.Parent = TabFrameScrolling
+			Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Slider.BackgroundTransparency = 1.000
+			Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Slider.BorderSizePixel = 0
+			Slider.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Slider.ZIndex = 5
+			Slider.Active = true
+			
+			UIAspectRatioConstraint.Parent = Slider
+			UIAspectRatioConstraint.AspectRatio = 6.000
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			SliderFrame.Name = "SliderFrame"
+			SliderFrame.Parent = Slider
+			SliderFrame.AnchorPoint = Vector2.new(0.5, 0)
+			SliderFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			SliderFrame.BackgroundTransparency = 0.750
+			SliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			SliderFrame.BorderSizePixel = 0
+			SliderFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+			SliderFrame.Size = UDim2.new(1, 0, 1, 0)
+			SliderFrame.ZIndex = 5
+			SliderFrame.Active = true
+			
+			UIAspectRatioConstraint_2.Parent = SliderFrame
+			UIAspectRatioConstraint_2.AspectRatio = 14.000
+			UIAspectRatioConstraint_2.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			UIStroke.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke.Parent = SliderFrame
+
+			UIGradient.Rotation = 90
+			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.57), NumberSequenceKeypoint.new(1.00, 0.86)}
+			UIGradient.Parent = SliderFrame
+
+			Move.Name = "Move"
+			Move.Parent = SliderFrame
+			Move.AnchorPoint = Vector2.new(0, 0.5)
+			Move.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+			Move.BackgroundTransparency = 0.500
+			Move.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Move.BorderSizePixel = 0
+			Move.ClipsDescendants = true
+			Move.Position = UDim2.new(0, 0, 0.5, 0)
+			Move.Size = UDim2.new(0, 0, 0.944999993, 0)
+			Move.ZIndex = 5
+			Move.Active = true
+			
+			UICorner.CornerRadius = UDim.new(0, 3)
+			UICorner.Parent = Move
+
+			Frame.Parent = Slider
+			Frame.AnchorPoint = Vector2.new(0.5, 1)
+			Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Frame.BorderSizePixel = 0
+			Frame.Position = UDim2.new(0.5, 0, 0.499999881, 0)
+			Frame.Size = UDim2.new(0.980000019, 0, 0.5, 0)
+			Frame.Active = true
+			
+			UIAspectRatioConstraint_3.Parent = Frame
+			UIAspectRatioConstraint_3.AspectRatio = 15.000
+			UIAspectRatioConstraint_3.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = Frame
+			Title.AnchorPoint = Vector2.new(0.5, 0.5)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0.368, 0, 0.50000006, 0)
+			Title.Size = UDim2.new(0.716, 0, 1.00000012, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = "Slider"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+			Title.Active = true
+			
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+
+			Value.Name = "Value"
+			Value.Parent = Frame
+			Value.AnchorPoint = Vector2.new(0.5, 0.5)
+			Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Value.BackgroundTransparency = 1.000
+			Value.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Value.BorderSizePixel = 0
+			Value.Position = UDim2.new(0.855, 0, 0.50000006, 0)
+			Value.Size = UDim2.new(0.259, 0, 1.00000012, 0)
+			Value.ZIndex = 6
+			Value.Font = Enum.Font.RobotoMono
+			Value.Text = ""
+			Value.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Value.TextScaled = true
+			Value.TextSize = 14.000
+			Value.TextWrapped = true
+			Value.TextXAlignment = Enum.TextXAlignment.Right
+			Value.Active = true
+			
+			UITextSizeConstraint_2.Parent = Value
+			UITextSizeConstraint_2.MinTextSize = 15
+			UITextSizeConstraint_2.MaxTextSize = 15
+			
+			ConnectButtonEffect(SliderFrame,SliderFrame:FindFirstChildWhichIsA('UIStroke'))
+			
+			local danger = false
+			
+			SliderFrame.InputBegan:Connect(function(Input)
+				if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+					danger = true
+					Dbg_can_move = false
+				end
+			end)
+
+			SliderFrame.InputEnded:Connect(function(Input)
+				if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+					danger = false
+					Dbg_can_move = true
+				end
+			end)
+			
+			local function Set(call,input)
+				if call == "Input" then
+					if danger and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+						local SizeScale = math.clamp(((input.Position.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X), 0, 1)
+						local Valuea = math.floor(((Max - Min) * SizeScale) + Min)
+						local Size = UDim2.fromScale(SizeScale, 1)
+						Value.Text = tostring(Valuea)..tostring("/")..tostring(Max)
+						TweenService:Create(Move,TweenInfo.new(0.02),{Size = Size}):Play()
+						callback(Valuea)
+					end
+				else
+					input = input or {}
+					local min = input[1] or Min
+					local max = input[2] or Max
+					
+					Value.Text = tostring(min)..tostring("/")..tostring(max)
+					callback(min)
+				end
+			end
+			
+			UserInputService.InputChanged:Connect(function(a)
+				Set("Input",a)
+			end)
+			
+			Set()
+			
+			return LinonaSlider
+		end
+		
+		function LinonaTab:NewTextBox(TextBoxName,Input,callback)
+			local LinonaTextBox = {}
+			callback = callback or function() end
+			local TextBox = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+			local Main = Instance.new("TextBox")
+			local UIStroke = Instance.new("UIStroke")
+			local UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
+			local UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint")
+
+			TextBox.Name = "TextBox"
+			TextBox.Parent = TabFrameScrolling
+			TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			TextBox.BackgroundTransparency = 1.000
+			TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			TextBox.BorderSizePixel = 0
+			TextBox.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			TextBox.ZIndex = 5
+
+			UIAspectRatioConstraint.Parent = TextBox
+			UIAspectRatioConstraint.AspectRatio = 6.000
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = TextBox
+			Title.AnchorPoint = Vector2.new(0.5, 1)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0.5, 0, 0.5, 0)
+			Title.Size = UDim2.new(0.980000019, 0, 1, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = TextBoxName or "TextBox"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+
+			UIAspectRatioConstraint_2.Parent = Title
+			UIAspectRatioConstraint_2.AspectRatio = 14.000
+			UIAspectRatioConstraint_2.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+
+			Main.Name = "Main"
+			Main.Parent = TextBox
+			Main.AnchorPoint = Vector2.new(0.5, 0)
+			Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Main.BackgroundTransparency = 1.000
+			Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Main.BorderSizePixel = 0
+			Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+			Main.Size = UDim2.new(0.980000019, 0, 1, 0)
+			Main.ZIndex = 7
+			Main.ClearTextOnFocus = false
+			Main.Font = Enum.Font.RobotoMono
+			Main.Text = ""
+			Main.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Main.TextScaled = true
+			Main.TextSize = 10.000
+			Main.TextTransparency = 0.300
+			Main.TextWrapped = true
+			Main.TextXAlignment = Enum.TextXAlignment.Left
+			Main.PlaceholderText = tostring(Input)
+			
+			UIStroke.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+			UIStroke.Parent = Main
+
+			UIAspectRatioConstraint_3.Parent = Main
+			UIAspectRatioConstraint_3.AspectRatio = 14.000
+			UIAspectRatioConstraint_3.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			UITextSizeConstraint_2.Parent = Main
+			UITextSizeConstraint_2.MinTextSize = 15
+			
+			ConnectButtonEffect(Main,Main:FindFirstChildWhichIsA('UIStroke'))
+			
+			Main.FocusLost:Connect(function()
+				callback(Main.Text)
+			end)
+			
+			function LinonaTextBox:Text(...)
+				local arge = {...}
+				Title.Text = tostring(arge[1])
+			end
+			
+			function LinonaTextBox:Get()
+				return Main.Text
+			end
+			
+			function LinonaTextBox:Set(...)
+				local arge = {...}
+				Main.Text = tostring(arge[1])
+				callback(Main.Text)
+			end
+			
+			function LinonaTextBox:Position(typeText)
+				local main = {
+					['right'] = Enum.TextXAlignment.Right,
+					['left'] = Enum.TextXAlignment.Left,
+					['center'] = Enum.TextXAlignment.Center
+				}
+				
+				typeText = main[tostring(typeText):lower()] or main.center
+				Title.TextXAlignment = typeText
+			end
+			
+			return LinonaTextBox
+		end
+		
+		function LinonaTab:NewKeybind(KeybindName,Default,callback)
+			local LinonaKeybind = {}
+			callback = callback or function() end
+			Default = Default or nil
+			
+			local function getText(enum:Enum.KeyCode)
+				if not enum then
+					return "None"
+				end
+				return enum.Name
+			end
+			
+			
+			local Keybind = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local Title = Instance.new("TextLabel")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+			local InputButton = Instance.new("TextButton")
+			local KeyShower = Instance.new("TextLabel")
+			local UIStroke = Instance.new("UIStroke")
+			
+			local function Update()
+				local number = #KeyShower.Text
+				local size = (number / 3) / 10
+				
+				TweenService:Create(KeyShower,TweenInfo.new(0.1),{Size = UDim2.new(size, 0,0.75, 0)}):Play()
+			end
+			
+			Keybind.Name = "Keybind"
+			Keybind.Parent = TabFrameScrolling
+			Keybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Keybind.BackgroundTransparency = 1.000
+			Keybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Keybind.BorderSizePixel = 0
+			Keybind.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Keybind.ZIndex = 5
+
+			UIAspectRatioConstraint.Parent = Keybind
+			UIAspectRatioConstraint.AspectRatio = 12.500
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			Title.Name = "Title"
+			Title.Parent = Keybind
+			Title.AnchorPoint = Vector2.new(0.5, 0.5)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0.329999924, 0, 0.500000894, 0)
+			Title.Size = UDim2.new(0.639999807, 0, 0.849999964, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = KeybindName or "Keybind"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+
+			InputButton.Name = "InputButton"
+			InputButton.Parent = Keybind
+			InputButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			InputButton.BackgroundTransparency = 1.000
+			InputButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.BorderSizePixel = 0
+			InputButton.Size = UDim2.new(1, 0, 1, 0)
+			InputButton.ZIndex = 10
+			InputButton.Font = Enum.Font.SourceSans
+			InputButton.Text = ""
+			InputButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.TextSize = 14.000
+			InputButton.TextTransparency = 1.000
+
+			KeyShower.Name = "KeyShower"
+			KeyShower.Parent = Keybind
+			KeyShower.AnchorPoint = Vector2.new(1, 0.5)
+			KeyShower.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			KeyShower.BackgroundTransparency = 1.000
+			KeyShower.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			KeyShower.BorderSizePixel = 0
+			KeyShower.Position = UDim2.new(1, 0, 0.5, 0)
+			KeyShower.Size = UDim2.new(0.360000014, 0, 0.75, 0)
+			KeyShower.ZIndex = 5
+			KeyShower.Font = Enum.Font.RobotoMono
+			KeyShower.Text = getText(Default) or "Right Shift"
+			KeyShower.TextColor3 = Color3.fromRGB(255, 255, 255)
+			KeyShower.TextScaled = true
+			KeyShower.TextSize = 14.000
+			KeyShower.TextWrapped = true
+
+			UIStroke.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+			UIStroke.Parent = KeyShower
+			
+			Update()
+			
+			ConnectButtonEffect(Keybind,KeyShower:FindFirstChildWhichIsA('UIStroke'))
+			
+			local Binding = false
+			InputButton.MouseButton1Click:Connect(function()
+				if Binding then
+					return
+				end
+				Binding =  true
+
+				local targetloadded = nil
+
+				local hook = UserInputService.InputBegan:Connect(function(is)
+					if is.KeyCode ~= Enum.KeyCode.Unknown then
+						targetloadded = is.KeyCode
+					end
+				end)
+				
+				KeyShower.Text = "..."
+				repeat task.wait() Update() until targetloadded or not Binding
+				Binding =false
+				if hook then
+					hook:Disconnect()
+				end
+				if targetloadded then
+					KeyShower.Text = getText(targetloadded)
+					Default = targetloadded
+					Update() 
+					callback(targetloadded)
+				end
+				return
+			end)
+			
+			function LinonaKeybind:Set(s)
+				if not s then
+					return
+				end
+				KeyShower.Text = getText(s)
+				Update(s) 
+				callback(s)
+			end
+			
+			function LinonaKeybind:Text(...)
+				local arge = {...}
+				Title.Text = tostring(arge[1])
+			end
+			
+			function LinonaKeybind:Get()
+				return Default
+			end
+			
+			return LinonaKeybind
+		end
+		
+		function LinonaTab:NewDropdown(DropdownName,Default,callback)
+			local LinonaDropdown = {}
+			Default = Default or {}
+			callback = callback or function() end
+			
+			local Dropdown = Instance.new("Frame")
+			local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+			local UIListLayout = Instance.new("UIListLayout")
+			local Top = Instance.new("Frame")
+			local Icon = Instance.new("TextLabel")
+			local UIStroke = Instance.new("UIStroke")
+			local InputButton = Instance.new("TextButton")
+			local Title = Instance.new("TextLabel")
+			local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+			local UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
+			local ScrollinMain = Instance.new("Frame")
+			local UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
+			local ScrollingFrame = Instance.new("ScrollingFrame")
+			local UIListLayout_2 = Instance.new("UIListLayout")
+			local UIAspectRatioConstraint_4 = Instance.new("UIAspectRatioConstraint")
+			local UITextSizeConstraint_2 = Instance.new("UITextSizeConstraint")
+			local UIStroke_2 = Instance.new("UIStroke")
+			local Frame = Instance.new("Frame")
+			local UIGradient = Instance.new("UIGradient")
+			local UIStroke_3 = Instance.new("UIStroke")
+			
+			UIListLayout_2:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+				ScrollingFrame.CanvasSize = UDim2.new(0,0,0,UIListLayout_2.AbsoluteContentSize.Y)	
+			end)
+			
+			Dropdown.Name = "Dropdown"
+			Dropdown.Parent = TabFrameScrolling
+			Dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Dropdown.BackgroundTransparency = 1.000
+			Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Dropdown.BorderSizePixel = 0
+			Dropdown.Size = UDim2.new(0.959999979, 0, 0.5, 0)
+			Dropdown.ZIndex = 5
+
+			UIAspectRatioConstraint.Parent = Dropdown
+			UIAspectRatioConstraint.AspectRatio = 12.500
+			UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			UIListLayout.Parent = Dropdown
+			UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			UIListLayout.Padding = UDim.new(0, 5)
+
+			Top.Name = "Top"
+			Top.Parent = Dropdown
+			Top.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Top.BackgroundTransparency = 1.000
+			Top.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Top.BorderSizePixel = 0
+			Top.Size = UDim2.new(0.980000019, 0, 1, 0)
+			Top.ZIndex = 8
+
+			Icon.Name = "Icon"
+			Icon.Parent = Top
+			Icon.AnchorPoint = Vector2.new(0, 0.5)
+			Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Icon.BackgroundTransparency = 1.000
+			Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Icon.BorderSizePixel = 0
+			Icon.Position = UDim2.new(0.944999993, 0, 0.5, 0)
+			Icon.Rotation = 90.000
+			Icon.Size = UDim2.new(0.949999988, 0, 0.949999988, 0)
+			Icon.SizeConstraint = Enum.SizeConstraint.RelativeYY
+			Icon.ZIndex = 6
+			Icon.Font = Enum.Font.Unknown
+			Icon.Text = ">"
+			Icon.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Icon.TextScaled = true
+			Icon.TextSize = 14.000
+			Icon.TextWrapped = true
+
+			UIStroke.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke.Parent = Top
+
+			InputButton.Name = "InputButton"
+			InputButton.Parent = Top
+			InputButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			InputButton.BackgroundTransparency = 1.000
+			InputButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.BorderSizePixel = 0
+			InputButton.Size = UDim2.new(1, 0, 1, 0)
+			InputButton.ZIndex = 10
+			InputButton.Font = Enum.Font.SourceSans
+			InputButton.Text = ""
+			InputButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+			InputButton.TextSize = 14.000
+			InputButton.TextTransparency = 1.000
+
+			Title.Name = "Title"
+			Title.Parent = Top
+			Title.AnchorPoint = Vector2.new(0.5, 0.5)
+			Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			Title.BackgroundTransparency = 1.000
+			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			Title.BorderSizePixel = 0
+			Title.Position = UDim2.new(0.452127457, 0, 0.49999994, 0)
+			Title.Size = UDim2.new(0.884254873, 0, 0.999999881, 0)
+			Title.ZIndex = 6
+			Title.Font = Enum.Font.RobotoMono
+			Title.Text = DropdownName or "Dropdown"
+			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Title.TextScaled = true
+			Title.TextSize = 14.000
+			Title.TextWrapped = true
+			Title.TextXAlignment = Enum.TextXAlignment.Left
+
+			UITextSizeConstraint.Parent = Title
+			UITextSizeConstraint.MinTextSize = 15
+
+			UIAspectRatioConstraint_2.Parent = Top
+			UIAspectRatioConstraint_2.AspectRatio = 14.000
+			UIAspectRatioConstraint_2.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			ScrollinMain.Name = "ScrollinMain"
+			ScrollinMain.Parent = Dropdown
+			ScrollinMain.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ScrollinMain.BackgroundTransparency = 1.000
+			ScrollinMain.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			ScrollinMain.BorderSizePixel = 0
+			ScrollinMain.Size = UDim2.new(0.980000019, 0, 1, 0)
+			ScrollinMain.Visible = false
+			ScrollinMain.ZIndex = 6
+
+			UIAspectRatioConstraint_3.Parent = ScrollinMain
+			UIAspectRatioConstraint_3.AspectRatio = 2.500
+			UIAspectRatioConstraint_3.AspectType = Enum.AspectType.ScaleWithParentSize
+
+			ScrollingFrame.Parent = ScrollinMain
+			ScrollingFrame.Active = true
+			ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+			ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ScrollingFrame.BackgroundTransparency = 1.000
+			ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			ScrollingFrame.BorderSizePixel = 0
+			ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+			ScrollingFrame.Size = UDim2.new(0.99000001, 0, 0.99000001, 0)
+			ScrollingFrame.ZIndex = 8
+			ScrollingFrame.ScrollBarThickness = 1
+
+			UIListLayout_2.Parent = ScrollingFrame
+			UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
+			UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+			UIListLayout_2.Padding = UDim.new(0, 5)
+
+			UIGradient.Rotation = 90
+			UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+			UIGradient.Parent = Frame
+
+			UIStroke_3.Color = Color3.fromRGB(25, 25, 25)
+			UIStroke_3.Parent = Dropdown
+			
+			local toggle = false
+			local function SetFrame(val)
+				if val then
+					TweenService:Create(Icon,TweenInfo.new(0.2),{Rotation = -90}):Play()
+					TweenService:Create(Dropdown:FindFirstChildWhichIsA('UIAspectRatioConstraint'),TweenInfo.new(0.1),{AspectRatio = 2}):Play()
+					ScrollinMain.Visible = true
+				else
+					TweenService:Create(Icon,TweenInfo.new(0.2),{Rotation = 90}):Play()
+					TweenService:Create(Dropdown:FindFirstChildWhichIsA('UIAspectRatioConstraint'),TweenInfo.new(0.1),{AspectRatio = 12.5}):Play()
+					ScrollinMain.Visible = false
+					
+				end
+			end
+			
+			SetFrame(false)
+			
+			ConnectButtonEffect(Dropdown,Top:FindFirstChildWhichIsA('UIStroke'))
+
+			InputButton.MouseButton1Click:Connect(function()
+				toggle = not toggle
+				SetFrame(toggle)
+			end)
+			
+			local function Texbutton()
+				local DropdownButton = Instance.new("TextButton")
+				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+				local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+				local UIStroke = Instance.new("UIStroke")
+				local Frame = Instance.new("Frame")
+				local UIGradient = Instance.new("UIGradient")
+
+				DropdownButton.Name = "DropdownButton"
+				DropdownButton.Parent = ScrollingFrame
+				DropdownButton.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+				DropdownButton.BackgroundTransparency = 1.000
+				DropdownButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				DropdownButton.BorderSizePixel = 0
+				DropdownButton.Size = UDim2.new(0.949999988, 0, 0.5, 0)
+				DropdownButton.ZIndex = 9
+				DropdownButton.Font = Enum.Font.RobotoMono
+				DropdownButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+				DropdownButton.TextSize = 14.000
+
+				UIAspectRatioConstraint.Parent = DropdownButton
+				UIAspectRatioConstraint.AspectRatio = 14.000
+				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+				UITextSizeConstraint.Parent = DropdownButton
+				UITextSizeConstraint.MinTextSize = 15
+
+				UIStroke.Color = Color3.fromRGB(25, 25, 25)
+				UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+				UIStroke.Parent = DropdownButton
+
+				Frame.Parent = DropdownButton
+				Frame.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+				Frame.BackgroundTransparency = 0.950
+				Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Frame.BorderSizePixel = 0
+				Frame.Size = UDim2.new(1, 0, 1, 0)
+				Frame.ZIndex = 8
+
+				UIGradient.Rotation = 90
+				UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+				UIGradient.Parent = Frame
+				
+				return DropdownButton
+			end
+			
+			local choose = nil
+			
+			local function Update()
+				for i,v : TextButton in ipairs(ScrollingFrame:GetChildren()) do
+					if v:isA('TextButton') then
+						v:Destroy()
+					end
+				end
+				
+				for i,v in ipairs(Default) do
+					local button = Texbutton()
+					ConnectButtonEffect(button,button:FindFirstChildWhichIsA('UIStroke'))
+					button.Text = tostring(v)
+					button.Parent = ScrollingFrame
+					button.MouseButton1Click:Connect(function()
+						for i,v : TextButton in ipairs(ScrollingFrame:GetChildren()) do
+							if v:isA('TextButton') then
+								if button == v then
+									TweenService:Create(v,TweenInfo.new(0.2),{BackgroundTransparency = 0.7}):Play()
+								else
+									TweenService:Create(v,TweenInfo.new(0.2),{BackgroundTransparency = 1}):Play()
+								end
+							end
+						end
+						choose = v
+						callback(tostring(v))
+					end)
+				end
+			end
+			
+			Update()
+			
+			function LinonaDropdown:Change(a)
+				Default = a or {}
+				Update()
+			end
+			
+			function LinonaDropdown:Get()
+				return choose
+			end
+			
+			function LinonaDropdown:Refresh()
+				Update()
+			end
+			
+			return LinonaDropdown
+		end
+		
+		
+		return LinonaTab
+	end
+	
+	function LinonaWindow:Destroy()
+		LinonaUI:Destroy()
+	end
+	
+	ConnectButtonEffect(Minsize,Minsize:FindFirstChildWhichIsA('UIStroke'))
+	ConnectButtonEffect(Close,Close:FindFirstChildWhichIsA('UIStroke'))
+	
+	Minsize.MouseButton1Click:Connect(function()
+		if IsMinsize then
+			IsMinsize = false
+			
+			TweenService:Create(DropShadow_2,TweenInfo.new(0.2),{ImageTransparency = 0.5}):Play()
+			TweenService:Create(DropShadow,TweenInfo.new(0.2),{ImageTransparency = 0.5}):Play()
+			TweenService:Create(HeaderText,TweenInfo.new(0.2),{Size = UDim2.new(0.98, 0,0.1, 0)}):Play() 
+
+			BOX_TAB_FRAMES.Visible = true
+			BOX_TAB_BUTTONS.Visible = true
+			TweenService:Create(Frame,TweenInfo.new(0.2),{Size = UDim2.new(0.48, 0,0.48, 0)}):Play()
+			TweenService:Create(ButtonHeader,TweenInfo.new(0.2),{Size = UDim2.new(0.156, 0,0.159, 0),Position=UDim2.new(0.843, 0,-0.083, 0)}):Play()
+
+		else
+			IsMinsize = true
+			
+			BOX_TAB_FRAMES.Visible = false
+			BOX_TAB_BUTTONS.Visible = false
+			TweenService:Create(Frame,TweenInfo.new(0.2),{Size = UDim2.new(0.219, 0,0.044, 0)}):Play()
+			TweenService:Create(ButtonHeader,TweenInfo.new(0.2),{Size = UDim2.new(0.218, 0,1.499, 0),Position=UDim2.new(0.781, 0,-0.917, 0)}):Play()
+			TweenService:Create(HeaderText,TweenInfo.new(0.2),{Size = UDim2.new(0.98, 0,0.965, 0)}):Play() 
+
+			TweenService:Create(DropShadow_2,TweenInfo.new(0.2),{ImageTransparency = 0.9}):Play()
+			TweenService:Create(DropShadow,TweenInfo.new(0.2),{ImageTransparency = 0.9}):Play()
+		end
+	end)
+	
+	Close.MouseButton1Click:Connect(function()
+		LinonaUI.Enabled = not LinonaUI.Enabled
+	end)
+	
+	UserInputService.InputBegan:Connect(function(key)
+		if key.KeyCode == LinonaWindow.BindKey then
+			LinonaUI.Enabled = not LinonaUI.Enabled
+		end
+	end)
+	
+	local dragToggle = nil
+	local dragStart = nil
+	local startPos = nil
+
+	local function updateInput(input)
+		local delta = input.Position - dragStart
+		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		game:GetService('TweenService'):Create(Frame, TweenInfo.new(0.05), {Position = position}):Play()
+	end
+
+	Frame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+			dragToggle = true
+			dragStart = input.Position
+			startPos = Frame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			if dragToggle and Dbg_can_move then
+				updateInput(input)
+			end
+		end
+	end)
+	
+	local Notifications = Instance.new("ScreenGui")
+	local Frame = Instance.new("Frame")
+	local UIListLayout = Instance.new("UIListLayout")
+
+	Notifications.Name = "Notifications"
+	Notifications.Parent = CoreGui
+	Notifications.ResetOnSpawn = false
+
+	Frame.Parent = Notifications
+	Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Frame.BackgroundTransparency = 1.000
+	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Frame.BorderSizePixel = 0
+	Frame.Position = UDim2.new(0.71205169, 0, 0.438179344, 0)
+	Frame.Size = UDim2.new(0.280191839, 0, 0.550000012, 0)
+
+	UIListLayout.Parent = Frame
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+	UIListLayout.Padding = UDim.new(0,2,0)
+	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	
+	function LinonaWindow:Notify(Text,Time)
+		if not Text then
+			return
+		end
+		
+		local Notify = Instance.new("Frame")
+		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+		local Framea = Instance.new("Frame")
+		local UIStroke = Instance.new("UIStroke")
+		local TextLabel = Instance.new("TextLabel")
+		local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+		local Frame_2 = Instance.new("Frame")
+		local UIGradient = Instance.new("UIGradient")
+
+		Notify.Name = "Notify"
+		Notify.Parent = Frame
+		Notify.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		Notify.BackgroundTransparency = 1.000
+		Notify.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Notify.BorderSizePixel = 0
+		Notify.Size = UDim2.new(1, 0, 1, 0)
+
+		UIAspectRatioConstraint.Parent = Notify
+		UIAspectRatioConstraint.AspectRatio = 8.000
+		UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+		Framea.Parent = Notify
+		Framea.AnchorPoint = Vector2.new(1, 0)
+		Framea.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		Framea.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Framea.BorderSizePixel = 0
+		Framea.Position = UDim2.new(1, 0, 0, 0)
+		Framea.Size = UDim2.new(0.577777803, 0, 1, 0)
+
+		UIStroke.Color = Color3.fromRGB(25, 25, 25)
+		UIStroke.Parent = Framea
+
+		TextLabel.Parent = Framea
+		TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TextLabel.BackgroundTransparency = 1.000
+		TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		TextLabel.BorderSizePixel = 0
+		TextLabel.Position = UDim2.new(0.0223247502, 0, 0.0999953672, 0)
+		TextLabel.Size = UDim2.new(0.947908938, 0, 0.900000751, 0)
+		TextLabel.Font = Enum.Font.RobotoMono
+		TextLabel.Text = Text or "Notifications"
+		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TextLabel.TextScaled = true
+		TextLabel.TextSize = 14.000
+		TextLabel.TextWrapped = true
+		TextLabel.TextXAlignment = Enum.TextXAlignment.Right
+
+		UITextSizeConstraint.Parent = TextLabel
+		UITextSizeConstraint.MaxTextSize = 25
+		UITextSizeConstraint.MinTextSize = 25
+
+		Frame_2.Parent = Framea
+		Frame_2.BackgroundColor3 = Color3.fromRGB(255, 0, 4)
+		Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Frame_2.BorderSizePixel = 0
+		Frame_2.Size = UDim2.new(1, 0, 0.100000001, 0)
+		Frame_2.ZIndex = 3
+
+		UIGradient.Rotation = 90
+		UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+		UIGradient.Parent = Frame_2
+		
+		Framea.Size = UDim2.new(0,0,0,0)
+		Framea.Position = UDim2.new(1.5,0,0,0)
+		Notify.Size = UDim2.new(0,0,0,0)
+		
+		local function UpdateText()
+			local number = #tostring(TextLabel.Text)
+			local sizex = (number / 2.25) / 10
+			
+			TweenService:Create(Framea,TweenInfo.new(0.2),{Size = UDim2.new(sizex,0,1,0),Position = UDim2.new(1,0,0,0)}):Play()
+		end
+		
+		Time = Time or 5
+		UpdateText()
+		
+		Frame_2.Size = UDim2.new(0,0,0.1,0)
+		TweenService:Create(Notify,TweenInfo.new(0.25),{Size = UDim2.new(1,0,1,0)}):Play()
+		task.wait(0.2)
+		
+		local te = TweenService:Create(Frame_2,TweenInfo.new(Time,Enum.EasingStyle.Linear),{Size = UDim2.new(1,0,0.1,0)})
+		
+		te:Play()
+		UpdateText()
+		te.Completed:Wait()
+		task.wait(0.2)
+		
+		TweenService:Create(Framea,TweenInfo.new(0.2),{Size = UDim2.new(0,0,0,0),Position = UDim2.new(1.5,0,0,0)}):Play()
+	end
+	
+	return LinonaWindow
+end
+
+return Linona
