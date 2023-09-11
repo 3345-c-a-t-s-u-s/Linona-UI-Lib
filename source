@@ -771,7 +771,7 @@ function Linona:NewWindow(WindowName,SizeConfix,BindKey)
 			Title.Size = UDim2.new(0.716, 0, 1.00000012, 0)
 			Title.ZIndex = 6
 			Title.Font = Enum.Font.RobotoMono
-			Title.Text = "Slider"
+			Title.Text = SliderName or "Slider"
 			Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 			Title.TextScaled = true
 			Title.TextSize = 14.000
