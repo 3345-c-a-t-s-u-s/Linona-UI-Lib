@@ -823,7 +823,7 @@ function Linona:NewWindow(WindowName,SizeConfix,BindKey)
 				end
 			end)
 			
-			local function Set(call,input)
+			local function Set(call,input,va)
 				if call == "Input" then
 					if danger and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
 						local SizeScale = math.clamp(((input.Position.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X), 0, 1)
@@ -834,12 +834,20 @@ function Linona:NewWindow(WindowName,SizeConfix,BindKey)
 						callback(Valuea)
 					end
 				else
-					input = input or {}
-					local min = input[1] or Min
-					local max = input[2] or Max
+					if not va then
+						input = input or {}
+						local min = input[1] or Min
+						local max = input[2] or Max
+
+						Value.Text = tostring(min)..tostring("/")..tostring(max)
+						callback(min)
+					else
+						Value.Text = tostring(va)..tostring("/")..tostring(Max)
+						local size = UDim2.new((va/Max),0,1,0)
+						TweenService:Create(Move,TweenInfo.new(0.02),{Size = size}):Play()
+						
+					end
 					
-					Value.Text = tostring(min)..tostring("/")..tostring(max)
-					callback(min)
 				end
 			end
 			
@@ -848,6 +856,10 @@ function Linona:NewWindow(WindowName,SizeConfix,BindKey)
 			end)
 			
 			Set()
+			
+			function LinonaSlider:Set(val)
+				Set("custom",val,val)
+			end
 			
 			return LinonaSlider
 		end
